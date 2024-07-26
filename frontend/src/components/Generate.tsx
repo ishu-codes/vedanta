@@ -1,3 +1,9 @@
+import ProgressSection from "./ProgressSection";
+
 export default function Generate() {
-    return <div>Generate</div>;
+    return (
+        <main className="w-full flex flex-col md:flex-row">
+            <ProgressSection />
+        </main>
+    );
 }
