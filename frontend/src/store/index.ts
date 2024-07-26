@@ -1,3 +1,4 @@
 import useFileStore from "./fileStore";
+import useProgressStore from "./progressStore";
 
-export { useFileStore };
+export { useFileStore, useProgressStore };

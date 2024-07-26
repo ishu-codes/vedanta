@@ -14,7 +14,7 @@ export default function Header() {
     return (
         <>
             <header
-                className="w-full px-4 md:px-8 py-3 bg-translucent-normal border-b border-[#ffffff0f] flex items-center justify-between z-20"
+                className="w-full px-4 md:px-12 py-3 bg-translucent-normal border-b border-[#ffffff0f] flex items-center justify-between z-20"
                 style={{ backdropFilter: "blur(8px)" }}
             >
                 <picture className="h-full">
