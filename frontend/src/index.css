@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* @import url("https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap"); */
+
 :root {
     font-family: "Sora", Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
@@ -20,6 +22,8 @@
 
 body {
     font-family: "Sora", sans-serif;
+    background-color: #06071d;
+    color: #ececec;
 }
 
 @media (prefers-color-scheme: light) {
@@ -27,12 +31,9 @@ body {
         color: #213547;
         background-color: #ffffff;
     }
-    a:hover {
+    /* a:hover {
         color: #f9f9f99c;
-    }
-    button {
-        background-color: #f9f9f9;
-    }
+    } */
 }
 .active {
     /* user-select: none; */

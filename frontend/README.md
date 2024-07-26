@@ -1,1 +1,1 @@
-# Vedanta - Frontend
+# Vedanta
