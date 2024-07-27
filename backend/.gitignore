@@ -1,3 +1,14 @@
+# Virtual Environment
+/venv
+# Cache
+__pycache__/
+# Keys
+keys/*
+# audio
+#generated_audio/*
 
-# Virtual Env
-venv/
+# Top secret
+/keys/credentials.json
+.env
+generated_audio/*
+temp_images/*
