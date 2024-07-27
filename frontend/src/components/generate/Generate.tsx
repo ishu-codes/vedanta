@@ -24,7 +24,7 @@ export default function Generate() {
         <>
             {/* <div className="w-full h-full flex flex-col md:flex-row px-4 bg-translucent-hard"> */}
             <ProgressSection />
-            <div className="flex-grow flex flex-col pt-20">
+            <div className="flex-grow flex flex-col pt-8 md:pt-16">
                 {states.map((state, index) => (
                     <React.Fragment key={index}>
                         {currentState === state.name && <state.page />}

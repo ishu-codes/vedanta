@@ -11,6 +11,7 @@ export default {
                 normal: "#FFFFFF03",
                 hard: "#FFFFFF0a",
             },
+            transparent: "transparent",
         },
         extend: {},
     },

@@ -24,7 +24,7 @@ export default function ProgressSection() {
             {checkpoints.map((checkpoint, index) => (
                 <button
                     key={index}
-                    className="flex flex-col md:flex-row gap-4 md:gap-4 items-center"
+                    className="flex flex-col md:flex-row gap-4 md:gap-4 items-center md:pr-4"
                     onClick={() => setCurrentState(checkpoint.name)}
                 >
                     {currentState === checkpoint.name ? (
