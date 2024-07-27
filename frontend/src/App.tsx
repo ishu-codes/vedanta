@@ -5,14 +5,17 @@ import "./App.css";
 
 export default function App() {
     return (
-        <div className="w-full min-h-screen container">
+        <div className="min-w-full min-h-screen container">
             <SystemIcons />
             <Header />
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/generate" element={<Generate />} />
-                <Route path="/about" element={<About />} />
-            </Routes>
+
+            <main className="w-full min-h-screen flex flex-col md:flex-row gap-8 pt-24 pb-6 px-2">
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/generate" element={<Generate />} />
+                    <Route path="/about" element={<About />} />
+                </Routes>
+            </main>
             {/* <div className="container w-full min-h-screen absolute top-0"></div> */}
         </div>
     );

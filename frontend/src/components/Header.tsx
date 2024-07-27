@@ -14,7 +14,7 @@ export default function Header() {
     return (
         <>
             <header
-                className="w-full px-4 md:px-12 py-3 bg-translucent-normal border-b border-[#ffffff0f] flex items-center justify-between z-20"
+                className="fixed w-full px-4 md:px-12 py-3 bg-translucent-normal border-b border-[#ffffff0f] flex items-center justify-between z-20"
                 style={{ backdropFilter: "blur(8px)" }}
             >
                 <picture className="h-full">
@@ -64,7 +64,7 @@ export default function Header() {
 
             {navbarOpen && (
                 <nav
-                    className="w-full absolute flex md:hidden flex-col space-y-4 px-8 py-4 bg-translucent-hard border-b border-[#ffffff1f] z-10"
+                    className="w-full absolute top-20 flex md:hidden flex-col space-y-4 px-8 py-4 bg-offBlack border-b border-[#ffffff1f] z-10 text-xl"
                     style={{ backdropFilter: "blur(8px)" }}
                 >
                     {navLinks.map((link, index) => (
