@@ -50,6 +50,9 @@ async def startup_event():
     :return: None
     """
     try:
+        os.system('rm file.pptx')
+        os.system('rm file.pdf')
+        os.system('rm file.mp4')
         os.system('del file.pptx')
         os.system('del file.pdf')
         os.system('del file.mp4')
