@@ -30,14 +30,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/assets", StaticFiles(directory="assets"), name="assets")
-templates = Jinja2Templates(directory="templates")
+app.mount("/vedanta/backend/assets", StaticFiles(directory="vedanta/backend/assets"), name="assets")
+templates = Jinja2Templates(directory="vedanta/backend/templates")
+
 
 @app.get("/", response_class=HTMLResponse)
-def show_frontend(request:Request):
+def show_frontend(request: Request):
     return templates.TemplateResponse(
-        request=request, name="index.html"
+                request=request, name="index.html"
     )
+
 
 @app.get("/api/")
 def api_root():
@@ -126,7 +128,7 @@ async def get_video(theme:str=''):
     return {"video-url": f"http://localhost:8000/get/file.mp4"}
 
 
-@app.get("/get/{file}")
+@app.get("/api/get/{file}")
 async def get_file(file):
     """
     Retrieves a file based on the provided file name.
