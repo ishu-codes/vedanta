@@ -32,7 +32,7 @@ app.add_middleware(
 @app.get("/")
 def read_root():
     """
-    Returns a dictionary containing the title and version of the Project Vedanta API.
+    Returns a dictionary containing the title and version of the Project Delta API.
 
     :return: A dictionary with the keys "title" and "version".
     :rtype: dict
@@ -110,7 +110,7 @@ async def get_video():
     output_path = "file.mp4"
     pdf_to_video(pdf_path, audio_dir, output_path, fps=1)
 
-    return {"video-url": f"http://localhost:8000/get/file.mp4"}
+    return {"video-url": f"http:    //localhost:8000/get/file.mp4"}
 
 
 @app.get("/get/{file}")
