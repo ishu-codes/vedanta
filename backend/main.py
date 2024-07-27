@@ -102,7 +102,7 @@ async def get_presentation():
             "pdf-url": f"http://localhost:8000/get/file.pdf"}
 
 
-@app.post("/generate_video")
+@app.post("/generate_video/")
 async def get_video():
     generate_audio_files(json.loads(generate_explanations()))
     pdf_path = "file.pdf"

@@ -1,7 +1,8 @@
 # Virtual Environment
 /venv
 # Cache
-__pycache__/
+/__pycache__/
+*/__pycache__/
 # Keys
 keys/*
 # audio
