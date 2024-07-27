@@ -11,11 +11,13 @@ import UploadPage from "./UploadPage";
 import SelectPage from "./SelectPage";
 import CustomizePage from "./CustomizePage";
 import GeneratePage from "./GeneratePage";
+import OutputPage from "./OutputPage";
 const states = [
     { name: "Upload", page: UploadPage },
     { name: "Select", page: SelectPage },
     { name: "Customize", page: CustomizePage },
     { name: "Generate", page: GeneratePage },
+    { name: "Output", page: OutputPage },
 ];
 
 export default function Generate() {

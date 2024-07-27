@@ -1,11 +1,29 @@
+import axios from "axios";
 import { useFileStore, useProgressStore } from "../../store";
+import { useState } from "react";
 
 export default function GeneratePage() {
-    const [isValidFile, filename] = useFileStore((state) => [
+    const BASE_URL = `http://localhost:8000`;
+    const [fileUploaded, setFileUploaded] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [
+        isValidFile,
+        file,
+        filename,
+        slidesGenerated,
+        videoGenerated,
+        setSlidesGenerated,
+        setVideoGenerated,
+    ] = useFileStore((state) => [
         state.validFile,
+        state.file,
         state.fileName,
+        state.slidesGenerated,
+        state.videoGenerated,
+        state.setSlidesGenerated,
+        state.setVideoGenerated,
     ]);
-    const [outputsForms, selectedTheme, setCurrentState] = useProgressStore(
+    const [outputForms, selectedTheme, setCurrentState] = useProgressStore(
         (state) => [state.outputs, state.currentTheme, state.setCurrentState]
     );
 
@@ -14,7 +32,7 @@ export default function GeneratePage() {
         {
             title: "Output",
             isList: true,
-            state: outputsForms.join(", "),
+            state: outputForms.join(", "),
             section: "Select",
         },
         {
@@ -24,6 +42,81 @@ export default function GeneratePage() {
             section: "Customize",
         },
     ];
+
+    const ensureFileUploaded = () => {
+        if (fileUploaded) return;
+
+        const formData = new FormData();
+        formData.append("file", file || "");
+        const config = {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        };
+        // setLoading(true);
+        axios
+            .post(`${BASE_URL}/upload_pdf/`, formData, config)
+            .then((response) => {
+                setFileUploaded(true);
+                // setPdfUploaded(true);
+                // excuteRequest(path, method);
+            })
+            .catch((error) => {
+                console.error("Error uploading file:", error);
+            });
+    };
+
+    const handleGenerate = () => {
+        ensureFileUploaded();
+
+        const formData = {
+            theme: selectedTheme,
+        };
+
+        setLoading(true);
+        if (outputForms.length == 2) {
+            axios
+                .post(`${BASE_URL}/get_presentation/`, formData)
+                .then((slidesResponse) => {
+                    setSlidesGenerated(true);
+                    axios
+                        .post(`${BASE_URL}/generate_video/`, formData)
+                        .then((videoResponse) => {
+                            setVideoGenerated(true);
+                            setLoading(false);
+                        });
+                })
+                .catch((error) => {
+                    console.error("Error generating content:", error);
+                    setLoading(false);
+                });
+            return;
+        }
+
+        if (outputForms[0] == "Slides") {
+            axios
+                .post(`${BASE_URL}/get_presentation/`, formData)
+                .then((slidesResponse) => {
+                    setSlidesGenerated(true);
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    console.error("Error generating content:", error);
+                    setLoading(false);
+                });
+            return;
+        }
+        axios
+            .post(`${BASE_URL}/generate_video/`, formData)
+            .then((videoResponse) => {
+                setVideoGenerated(true);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error("Error generating content:", error);
+                setLoading(false);
+            });
+    };
 
     return (
         <div className="byteContainer flex flex-col items-center mx-auto py-12 px-8 md:px-20 bg-translucent-normal border border-[#ffffff1c] rounded-lg space-y-10">
@@ -51,7 +144,7 @@ export default function GeneratePage() {
             {isValidFile ? (
                 <button
                     className="text-xl font-semibold px-[.1rem] py-[.1rem] bgGradient rounded-lg"
-                    onClick={() => setCurrentState("Generate")}
+                    onClick={() => handleGenerate()}
                 >
                     <p className="w-full px-3 py-1 bg-offBlack rounded-lg">
                         <span className="textGradient">Generate</span>

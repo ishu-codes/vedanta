@@ -3,6 +3,7 @@ import {
     SelectIcon,
     CustomizeIcon,
     GenerateIcon,
+    OutputIcon,
 } from "../../icons";
 import { useProgressStore } from "../../store";
 
@@ -11,6 +12,7 @@ const checkpoints = [
     { name: "Select", icon: SelectIcon },
     { name: "Customize", icon: CustomizeIcon },
     { name: "Generate", icon: GenerateIcon },
+    { name: "Output", icon: OutputIcon },
 ];
 
 export default function ProgressSection() {
