@@ -17,9 +17,11 @@ export default function Header() {
                 className="fixed w-full px-4 md:px-12 py-3 bg-translucent-normal border-b border-[#ffffff0f] flex items-center justify-between z-20"
                 style={{ backdropFilter: "blur(8px)" }}
             >
-                <picture className="h-full">
-                    <img className="h-full" src={logo} alt="logo" />
-                </picture>
+                <Link to="/">
+                    <picture className="h-full">
+                        <img className="h-full" src={logo} alt="logo" />
+                    </picture>
+                </Link>
                 <nav className="hidden md:flex space-x-10 px-8 py-3 bg-translucent-normal border border-[#ffffff1f] rounded-xl">
                     {navLinks.map((link, index) => (
                         <Link

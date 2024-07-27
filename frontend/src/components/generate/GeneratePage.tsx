@@ -60,22 +60,20 @@ export default function GeneratePage() {
     const handleGenerate = () => {
         ensureFileUploaded();
 
-        const formData = {
-            theme: selectedTheme,
-        };
+        // const formData = {
+        //     theme: selectedTheme,
+        // };
 
         setLoading(true);
         if (outputForms.length == 2) {
             axios
-                .post(`${BASE_URL}/get_presentation/`, formData)
+                .post(`${BASE_URL}/get_presentation/`)
                 .then(() => {
                     setSlidesGenerated(true);
-                    axios
-                        .post(`${BASE_URL}/generate_video/`, formData)
-                        .then(() => {
-                            setVideoGenerated(true);
-                            setLoading(false);
-                        });
+                    axios.post(`${BASE_URL}/generate_video/`).then(() => {
+                        setVideoGenerated(true);
+                        setLoading(false);
+                    });
                 })
                 .catch((error) => {
                     console.error("Error generating content:", error);
@@ -86,7 +84,7 @@ export default function GeneratePage() {
 
         if (outputForms[0] == "Slides") {
             axios
-                .post(`${BASE_URL}/get_presentation/`, formData)
+                .post(`${BASE_URL}/get_presentation/`)
                 .then(() => {
                     setSlidesGenerated(true);
                     setLoading(false);
@@ -98,7 +96,7 @@ export default function GeneratePage() {
             return;
         }
         axios
-            .post(`${BASE_URL}/generate_video/`, formData)
+            .post(`${BASE_URL}/generate_video/`)
             .then(() => {
                 setVideoGenerated(true);
                 setLoading(false);
