@@ -1,14 +1,16 @@
 import json
 import os
-import convertapi
+import shutil
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
-from vedanta.backend.apps.audiops import generate_audio_files
-from vedanta.backend.apps.pdfops import upload_file
-from vedanta.backend.apps.ppt_generator import generate_presentation
-from vedanta.backend.apps.promptops import generate_explanations
-from vedanta.backend.apps.videops import pdf_to_video
+# from pptxtopdf import convert
+import convertapi
+from ProjectDelta.backend.apps.audiops import gen   erate_audio_files
+from ProjectDelta.backend.apps.pdfops import upload_file
+from ProjectDelta.backend.apps.ppt_generator import generate_presentation
+from ProjectDelta.backend.apps.promptops import generate_explanations
+from ProjectDelta.backend.apps.videops import pdf_to_video
 
 app = FastAPI()
 
@@ -36,9 +38,33 @@ def read_root():
     :rtype: dict
     """
     return {
-        "title": "Project Vedanta",
-        "version": "0.1.0"
+        "title": "Project Delta",
+        "version": "0.9.0",
     }
+
+
+@app.on_event("startup")
+async def startup_event():
+    """
+    Standard Cleanup Operation
+    :return: None
+    """
+    try:
+        os.system('del file.pptx')
+        os.system('del file.pdf')
+        os.system('del file.mp4')
+        temp_path = 'ProjectDelta/backend/temp_images'
+        audio_dir = 'ProjectDelta/backend/generated_audio'
+        shutil.rmtree(temp_path)
+        shutil.rmtree(audio_dir)
+        if not os.path.exists(temp_path):
+            os.makedirs(temp_path)
+        if not os.path.exists(audio_dir):
+            os.makedirs(audio_dir)
+
+    except Exception as e:
+        print(e)
+        pass
 
 
 @app.post("/upload_pdf/")
@@ -57,7 +83,7 @@ async def upload_pdf(file: UploadFile = File(...)):
 
 
 @app.post("/get_presentation/")
-async def get_presentation(selected_theme="Theme1"):
+async def get_presentation():
     """
     Get a PPTX file based on the PDF context.
 
@@ -65,7 +91,7 @@ async def get_presentation(selected_theme="Theme1"):
     - The PPTX File link.
     """
     print("api ab wait karega")
-    await generate_presentation(selected_theme)
+    await generate_presentation()
     print("api ko file mil gaya")
     convertapi.api_secret = os.environ.get('CONVERTAPI_KEY')
     convertapi.convert('pdf', {
@@ -80,9 +106,10 @@ async def get_presentation(selected_theme="Theme1"):
 async def get_video():
     generate_audio_files(json.loads(generate_explanations()))
     pdf_path = "file.pdf"
-    audio_dir = "vedanta/backend/generated_audio"
+    audio_dir = "ProjectDelta/backend/generated_audio"
     output_path = "file.mp4"
     pdf_to_video(pdf_path, audio_dir, output_path, fps=1)
+
     return {"video-url": f"http://localhost:8000/get/file.mp4"}
 
 
@@ -108,3 +135,4 @@ async def get_file(file):
                                                     "officedocument.presentationml.file")
     if file == 'file.mp4':
         return FileResponse("file.mp4", media_type="video/mp4")
+                                                    
