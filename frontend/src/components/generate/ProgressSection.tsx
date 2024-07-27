@@ -20,7 +20,7 @@ export default function ProgressSection() {
     ]);
 
     return (
-        <div className="w-full md:w-auto flex md:flex-col items-center md:items-start justify-evenly md:space-y-10 md:px-12 pt-8 md:pt-24">
+        <div className="w-full md:w-auto flex md:flex-col items-center md:items-start justify-evenly md:justify-normal md:space-y-10 md:px-12 md:pt-20">
             {checkpoints.map((checkpoint, index) => (
                 <button
                     key={index}
@@ -28,7 +28,7 @@ export default function ProgressSection() {
                     onClick={() => setCurrentState(checkpoint.name)}
                 >
                     {currentState === checkpoint.name ? (
-                        <div className="p-2 rounded-full bg-offWhite">
+                        <div className="p-2 rounded-full bg-offWhite border border-[#FFFFFF4a]">
                             <checkpoint.icon color="#06071D" />
                         </div>
                     ) : (

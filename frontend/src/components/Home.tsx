@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 export default function Home() {
     return (
-        <main className="w-full flex flex-col pt-12 pb-6 px-2">
-            <div className="w-full flex flex-col items-center text-center mt-16 px-6">
+        <>
+            <div className="w-full h-full flex flex-col items-center text-center mt-16 px-6">
                 <div className="font-bold text-[2.7rem] md:text-[4.5rem]">
                     <h1 className="bgGradient">Supercharge your docs</h1>
                     <h1 className="mt-2">with the power of AI</h1>
@@ -22,6 +22,6 @@ export default function Home() {
                     </Link>
                 </div>
             </div>
-        </main>
+        </>
     );
 }

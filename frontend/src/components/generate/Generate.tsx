@@ -21,7 +21,8 @@ const states = [
 export default function Generate() {
     const [currentState] = useProgressStore((state) => [state.currentState]);
     return (
-        <main className="w-full flex flex-col md:flex-row px-4">
+        <>
+            {/* <div className="w-full h-full flex flex-col md:flex-row px-4 bg-translucent-hard"> */}
             <ProgressSection />
             <div className="flex-grow flex flex-col pt-20">
                 {states.map((state, index) => (
@@ -30,6 +31,7 @@ export default function Generate() {
                     </React.Fragment>
                 ))}
             </div>
-        </main>
+            {/* </div> */}
+        </>
     );
 }
