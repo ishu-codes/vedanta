@@ -3,16 +3,17 @@ import { create } from "zustand";
 interface progressStoreInterface {
     currentState: string;
     outputs: string[];
-    theme: string;
+    currentTheme: string;
     setCurrentState: (newState: string) => void;
     updateOutputs: (newOutputs: string[]) => void;
-    updateTheme: (newTheme: string) => void;
+    setCurrentTheme: (newTheme: string) => void;
+    toggleOutputChoice: (output: string) => void;
 }
 
 const useProgressStore = create<progressStoreInterface>((set) => ({
     currentState: "Upload",
-    outputs: ["slides"],
-    theme: "theme1",
+    outputs: ["Slides"],
+    currentTheme: "Auto",
     setCurrentState: (newState: string) =>
         set(() => ({
             currentState: newState,
@@ -21,9 +22,26 @@ const useProgressStore = create<progressStoreInterface>((set) => ({
         set(() => ({
             outputs: newOutputs,
         })),
-    updateTheme: (newTheme: string) => () => ({
-        theme: newTheme,
-    }),
+    setCurrentTheme: (newTheme: string) =>
+        set(() => ({ currentTheme: newTheme })),
+    // toggleOutputChoice: (output: string) => () => ({
+    //     // let choice = state
+    //     set((state) => {
+    //         let choice = state.choices.fin
+    //     })
+    // }),
+    toggleOutputChoice: (output: string) =>
+        set((state) => {
+            let choice = state.outputs.includes(output);
+            if (choice) {
+                if (state.outputs.length == 1)
+                    return { outputs: state.outputs };
+                return {
+                    outputs: state.outputs.filter((op) => op !== output),
+                };
+            }
+            return { outputs: [...state.outputs, output] };
+        }),
 }));
 
 export default useProgressStore;

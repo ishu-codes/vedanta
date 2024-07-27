@@ -20,11 +20,11 @@ export default function ProgressSection() {
     ]);
 
     return (
-        <div className="w-full md:w-auto flex md:flex-col items-center md:items-start justify-evenly md:justify-normal md:space-y-10 md:px-12 md:pt-20">
+        <div className="w-full md:w-auto flex md:flex-col items-center md:items-start justify-evenly md:justify-normal md:space-y-10 md:px-12 md:pt-20 sticky">
             {checkpoints.map((checkpoint, index) => (
                 <button
                     key={index}
-                    className="flex flex-col md:flex-row gap-4 md:gap-4 items-center"
+                    className="flex flex-col md:flex-row gap-4 md:gap-4 items-center md:pr-4"
                     onClick={() => setCurrentState(checkpoint.name)}
                 >
                     {currentState === checkpoint.name ? (
