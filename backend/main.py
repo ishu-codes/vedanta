@@ -1,9 +1,11 @@
 import json
 import os
-import convertapi
+import shutil
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
+# from pptxtopdf import convert
+import convertapi
 from vedanta.backend.apps.audiops import generate_audio_files
 from vedanta.backend.apps.pdfops import upload_file
 from vedanta.backend.apps.ppt_generator import generate_presentation
@@ -30,15 +32,39 @@ app.add_middleware(
 @app.get("/")
 def read_root():
     """
-    Returns a dictionary containing the title and version of the Project Delta API.
+    Returns a dictionary containing the title and version of the Project Vedanta API.
 
     :return: A dictionary with the keys "title" and "version".
     :rtype: dict
     """
     return {
-        "title": "Project Vedanta",
-        "version": "0.1.0"
+        "title": "Project Delta",
+        "version": "0.9.0",
     }
+
+
+@app.on_event("startup")
+async def startup_event():
+    """
+    Standard Cleanup Operation
+    :return: None
+    """
+    try:
+        os.system('del file.pptx')
+        os.system('del file.pdf')
+        os.system('del file.mp4')
+        temp_path = 'vedanta/backend/temp_images'
+        audio_dir = 'vedanta/backend/generated_audio'
+        shutil.rmtree(temp_path)
+        shutil.rmtree(audio_dir)
+        if not os.path.exists(temp_path):
+            os.makedirs(temp_path)
+        if not os.path.exists(audio_dir):
+            os.makedirs(audio_dir)
+
+    except Exception as e:
+        print(e)
+        pass
 
 
 @app.post("/upload_pdf/")
@@ -57,7 +83,7 @@ async def upload_pdf(file: UploadFile = File(...)):
 
 
 @app.post("/get_presentation/")
-async def get_presentation(selected_theme="Theme1"):
+async def get_presentation():
     """
     Get a PPTX file based on the PDF context.
 
@@ -65,7 +91,7 @@ async def get_presentation(selected_theme="Theme1"):
     - The PPTX File link.
     """
     print("api ab wait karega")
-    await generate_presentation(selected_theme)
+    await generate_presentation()
     print("api ko file mil gaya")
     convertapi.api_secret = os.environ.get('CONVERTAPI_KEY')
     convertapi.convert('pdf', {
@@ -83,6 +109,7 @@ async def get_video():
     audio_dir = "vedanta/backend/generated_audio"
     output_path = "file.mp4"
     pdf_to_video(pdf_path, audio_dir, output_path, fps=1)
+
     return {"video-url": f"http://localhost:8000/get/file.mp4"}
 
 
