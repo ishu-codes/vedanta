@@ -9,7 +9,7 @@ from vedanta.backend.apps.promptops import process_user_question
 from vedanta.backend.knowledge_database.helper import get_knowledge_base, set_json_slide
 
 
-async def generate_presentation():
+async def generate_presentation(selected_theme="Theme1"):
     """
     Asynchronously generates a PowerPoint presentation based on the knowledge base.
 
@@ -70,7 +70,7 @@ async def generate_presentation():
         print(json_pptx)
         set_json_slide(json_data=json_pptx)
         print("abb processing hogi")
-        output_file = process_presentation(json_pptx)
+        output_file = process_presentation(json_pptx, selected_theme)
         return output_file
     except Exception as e:
         logging.error(f"An error occurred during generate_presentation(): {str(e)}")
@@ -200,7 +200,7 @@ def process_presentation(json_data, selected_theme="Theme1"):
     try:
         validate_json_data_structure(json_data)
         print("json valid tha")
-        presentation = Presentation("ProjectDelta/backend/theme_pptx/" + selected_theme + ".pptx")
+        presentation = Presentation("vedanta/backend/theme_pptx/" + selected_theme + ".pptx")
         slides = json_data.get("slides", []) if isinstance(json_data, dict) else json_data
 
         for slide_data in slides:

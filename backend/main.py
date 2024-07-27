@@ -1,11 +1,14 @@
-from vedanta.backend.apps.pdfops import upload_file
+import json
+import os
+import convertapi
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
-import convertapi
-import os
-from vedanta.backend.apps.ppt_generator import generate_presentation
 from fastapi.responses import FileResponse
-
+from vedanta.backend.apps.audiops import generate_audio_files
+from vedanta.backend.apps.pdfops import upload_file
+from vedanta.backend.apps.ppt_generator import generate_presentation
+from vedanta.backend.apps.promptops import generate_explanations
+from vedanta.backend.apps.videops import pdf_to_video
 
 app = FastAPI()
 
@@ -54,7 +57,7 @@ async def upload_pdf(file: UploadFile = File(...)):
 
 
 @app.post("/get_presentation/")
-async def get_presentation():
+async def get_presentation(selected_theme="Theme1"):
     """
     Get a PPTX file based on the PDF context.
 
@@ -62,7 +65,7 @@ async def get_presentation():
     - The PPTX File link.
     """
     print("api ab wait karega")
-    await generate_presentation()
+    await generate_presentation(selected_theme)
     print("api ko file mil gaya")
     convertapi.api_secret = os.environ.get('CONVERTAPI_KEY')
     convertapi.convert('pdf', {
@@ -71,6 +74,16 @@ async def get_presentation():
     # convert('file.pptx', '.')
     return {"pptx-url": f"http://localhost:8000/get/file.pptx",
             "pdf-url": f"http://localhost:8000/get/file.pdf"}
+
+
+@app.post("/generate_video")
+async def get_video():
+    generate_audio_files(json.loads(generate_explanations()))
+    pdf_path = "file.pdf"
+    audio_dir = "vedanta/backend/generated_audio"
+    output_path = "file.mp4"
+    pdf_to_video(pdf_path, audio_dir, output_path, fps=1)
+    return {"video-url": f"http://localhost:8000/get/file.mp4"}
 
 
 @app.get("/get/{file}")
@@ -95,4 +108,3 @@ async def get_file(file):
                                                     "officedocument.presentationml.file")
     if file == 'file.mp4':
         return FileResponse("file.mp4", media_type="video/mp4")
-
