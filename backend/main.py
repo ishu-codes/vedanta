@@ -122,6 +122,11 @@ async def get_video():
     return {"video-url": f"http://localhost:8000/get/file.mp4"}
 
 
+@app.options("api/generate_video/")
+async def handle_options(request: Request):
+    return {"Allow": "GET, POST, OPTIONS"}
+
+
 @app.get("api/get/{file}")
 async def get_file(file):
     """
@@ -144,3 +149,8 @@ async def get_file(file):
                                                     "officedocument.presentationml.file")
     if file == 'file.mp4':
         return FileResponse("file.mp4", media_type="video/mp4")
+
+
+@app.options("api/get/{file}")
+async def handle_options(request: Request):
+    return {"Allow": "GET, OPTIONS"}
