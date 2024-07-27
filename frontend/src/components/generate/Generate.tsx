@@ -1,10 +1,4 @@
-import React, { useState } from "react";
-import {
-    UploadIcon,
-    SelectIcon,
-    CustomizeIcon,
-    GenerateIcon,
-} from "../../icons";
+import React from "react";
 import ProgressSection from "./ProgressSection";
 import { useProgressStore } from "../../store";
 import UploadPage from "./UploadPage";

@@ -3,26 +3,17 @@ import { useFileStore, useProgressStore } from "../../store";
 import { useState } from "react";
 
 export default function GeneratePage() {
-    const BASE_URL = `http://localhost:8000`;
+    const BASE_URL = `/api`;
     const [fileUploaded, setFileUploaded] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [
-        isValidFile,
-        file,
-        filename,
-        slidesGenerated,
-        videoGenerated,
-        setSlidesGenerated,
-        setVideoGenerated,
-    ] = useFileStore((state) => [
-        state.validFile,
-        state.file,
-        state.fileName,
-        state.slidesGenerated,
-        state.videoGenerated,
-        state.setSlidesGenerated,
-        state.setVideoGenerated,
-    ]);
+    const [isValidFile, file, filename, setSlidesGenerated, setVideoGenerated] =
+        useFileStore((state) => [
+            state.validFile,
+            state.file,
+            state.fileName,
+            state.setSlidesGenerated,
+            state.setVideoGenerated,
+        ]);
     const [outputForms, selectedTheme, setCurrentState] = useProgressStore(
         (state) => [state.outputs, state.currentTheme, state.setCurrentState]
     );
@@ -53,10 +44,10 @@ export default function GeneratePage() {
                 "Content-Type": "multipart/form-data",
             },
         };
-        // setLoading(true);
+        setLoading(true);
         axios
             .post(`${BASE_URL}/upload_pdf/`, formData, config)
-            .then((response) => {
+            .then(() => {
                 setFileUploaded(true);
                 // setPdfUploaded(true);
                 // excuteRequest(path, method);
@@ -77,11 +68,11 @@ export default function GeneratePage() {
         if (outputForms.length == 2) {
             axios
                 .post(`${BASE_URL}/get_presentation/`, formData)
-                .then((slidesResponse) => {
+                .then(() => {
                     setSlidesGenerated(true);
                     axios
                         .post(`${BASE_URL}/generate_video/`, formData)
-                        .then((videoResponse) => {
+                        .then(() => {
                             setVideoGenerated(true);
                             setLoading(false);
                         });
@@ -96,7 +87,7 @@ export default function GeneratePage() {
         if (outputForms[0] == "Slides") {
             axios
                 .post(`${BASE_URL}/get_presentation/`, formData)
-                .then((slidesResponse) => {
+                .then(() => {
                     setSlidesGenerated(true);
                     setLoading(false);
                 })
@@ -108,7 +99,7 @@ export default function GeneratePage() {
         }
         axios
             .post(`${BASE_URL}/generate_video/`, formData)
-            .then((videoResponse) => {
+            .then(() => {
                 setVideoGenerated(true);
                 setLoading(false);
             })
@@ -142,14 +133,26 @@ export default function GeneratePage() {
                 </div>
             </div>
             {isValidFile ? (
-                <button
-                    className="text-xl font-semibold px-[.1rem] py-[.1rem] bgGradient rounded-lg"
-                    onClick={() => handleGenerate()}
-                >
-                    <p className="w-full px-3 py-1 bg-offBlack rounded-lg">
-                        <span className="textGradient">Generate</span>
-                    </p>
-                </button>
+                !loading ? (
+                    <button
+                        className="text-xl font-semibold px-[.1rem] py-[.1rem] bgGradient rounded-lg"
+                        onClick={() => handleGenerate()}
+                    >
+                        <p className="w-full px-3 py-1 bg-offBlack rounded-lg">
+                            <span className="textGradient">Generate</span>
+                        </p>
+                    </button>
+                ) : (
+                    <button
+                        disabled
+                        className="text-xl font-semibold px-[.1rem] py-[.1rem] bg-secondary rounded-lg"
+                    >
+                        <p className="w-full flex gap-4 items-center px-3 py-1 bg-offBlack rounded-lg">
+                            <span className="loader"></span>
+                            <span className="text-secondary">Generating</span>
+                        </p>
+                    </button>
+                )
             ) : (
                 <button
                     disabled
@@ -160,6 +163,15 @@ export default function GeneratePage() {
                     </p>
                 </button>
             )}
+
+            {/* {!loading && (
+                <div
+                    className="w-full bg-translucent-hard z-50"
+                    style={{ backdropFilter: "blur(8px)" }}
+                >
+                    <span className="loader"></span>
+                </div>
+            )} */}
         </div>
     );
 }

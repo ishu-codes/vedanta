@@ -16,10 +16,10 @@ const useFileStore = create<fileStoreInterface>((set) => ({
     validFile: false,
     file: undefined,
     fileName: "",
-    slidesGenerated: true,
-    videoGenerated: true,
+    slidesGenerated: false,
+    videoGenerated: false,
     setValidFile: (file: File) =>
-        set((state) => ({
+        set(() => ({
             validFile: true,
             file,
             fileName: file.name,
@@ -27,7 +27,7 @@ const useFileStore = create<fileStoreInterface>((set) => ({
             videoGenerated: false,
         })),
     setInvalidFile: () =>
-        set((state) => ({
+        set(() => ({
             validFile: false,
             file: undefined,
             fileName: "",

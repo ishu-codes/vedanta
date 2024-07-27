@@ -1,9 +1,11 @@
 import json
 import os
 import shutil
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 # from pptxtopdf import convert
 import convertapi
 from vedanta.backend.apps.audiops import generate_audio_files
@@ -28,9 +30,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.mount("/assets", StaticFiles(directory="assets"), name="assets")
+templates = Jinja2Templates(directory="templates")
 
-@app.get("/")
-def read_root():
+@app.get("/", response_class=HTMLResponse)
+def show_frontend(request:Request):
+    return templates.TemplateResponse(
+        request=request, name="index.html"
+    )
+
+@app.get("/api/")
+def api_root():
     """
     Returns a dictionary containing the title and version of the Project vedanta API.
 
@@ -70,7 +80,7 @@ async def startup_event():
         pass
 
 
-@app.post("/upload_pdf/")
+@app.post("/api/upload_pdf/")
 async def upload_pdf(file: UploadFile = File(...)):
     """
     Upload a PDF file and process it.
@@ -85,8 +95,8 @@ async def upload_pdf(file: UploadFile = File(...)):
     return await upload_file(file)
 
 
-@app.post("/get_presentation/")
-async def get_presentation():
+@app.post("/api/get_presentation/")
+async def get_presentation(theme:str=''):
     """
     Get a PPTX file based on the PDF context.
 
@@ -105,8 +115,8 @@ async def get_presentation():
             "pdf-url": f"http://localhost:8000/get/file.pdf"}
 
 
-@app.post("/generate_video/")
-async def get_video():
+@app.post("/api/generate_video/")
+async def get_video(theme:str=''):
     generate_audio_files(json.loads(generate_explanations()))
     pdf_path = "file.pdf"
     audio_dir = "vedanta/backend/generated_audio"

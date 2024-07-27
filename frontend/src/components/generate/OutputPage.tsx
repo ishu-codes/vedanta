@@ -1,7 +1,7 @@
 import { useFileStore } from "../../store";
 
 export default function OutputPage() {
-    const BASE_URL = "http://localhost:8000";
+    const BASE_URL = "/api";
     const [slidesGenerated, videoGenerated] = useFileStore((state) => [
         state.slidesGenerated,
         state.videoGenerated,

@@ -13,7 +13,7 @@ export default function UploadPage() {
         state.setCurrentState,
     ]);
     const handleFileUpload = (event: ChangeEvent) => {
-        console.log(event);
+        // console.log(event);
         let element = event.currentTarget as HTMLInputElement;
         let fileList: FileList | null = element.files;
 
@@ -29,7 +29,7 @@ export default function UploadPage() {
         const droppedFiles = Array.from(event.dataTransfer.files);
         if (droppedFiles && droppedFiles.length) {
             setValidFile(droppedFiles[0]);
-            console.log(droppedFiles[0].name);
+            // console.log(droppedFiles[0].name);
         } else {
             setInvalidFile();
         }

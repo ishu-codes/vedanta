@@ -20,7 +20,7 @@ def pdf_to_video(pdf_path, audio_dir, output_path, fps=1):
     # Load a document
     pdf = pdfium.PdfDocument(pdf_path)
 
-    temp_path = "vedanta/backend/temp_images"
+    temp_path = "./temp_images"
     if not os.path.exists(temp_path):
         os.makedirs(temp_path)
     # Loop over pages and render

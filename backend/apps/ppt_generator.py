@@ -200,7 +200,7 @@ def process_presentation(json_data, selected_theme="Theme1"):
     try:
         validate_json_data_structure(json_data)
         print("json valid tha")
-        presentation = Presentation("vedanta/backend/theme_pptx/" + selected_theme + ".pptx")
+        presentation = Presentation("./theme_pptx/" + selected_theme + ".pptx")
         slides = json_data.get("slides", []) if isinstance(json_data, dict) else json_data
 
         for slide_data in slides:
