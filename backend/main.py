@@ -1,7 +1,7 @@
 import json
 import os
 import shutil
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 # from pptxtopdf import convert
@@ -17,6 +17,7 @@ app = FastAPI()
 origins = [
     "127.0.0.1:8000",
     "http://localhost:3000",
+    "http://localhost:5173"
 ]
 
 # noinspection PyTypeChecker
@@ -70,7 +71,7 @@ async def startup_event():
         pass
 
 
-@app.post("/upload_pdf/")
+@app.post("/api/upload_pdf/")
 async def upload_pdf(file: UploadFile = File(...)):
     """
     Upload a PDF file and process it.
@@ -85,7 +86,7 @@ async def upload_pdf(file: UploadFile = File(...)):
     return await upload_file(file)
 
 
-@app.post("/get_presentation/")
+@app.post("/api/get_presentation/")
 async def get_presentation():
     """
     Get a PPTX file based on the PDF context.
@@ -105,7 +106,12 @@ async def get_presentation():
             "pdf-url": f"http://localhost:8000/get/file.pdf"}
 
 
-@app.post("/generate_video/")
+@app.options("api/get_presentation/")
+async def handle_options(request: Request):
+    return {"Allow": "GET, POST, OPTIONS"}
+
+
+@app.post("api/generate_video/")
 async def get_video():
     generate_audio_files(json.loads(generate_explanations()))
     pdf_path = "file.pdf"
@@ -116,7 +122,7 @@ async def get_video():
     return {"video-url": f"http://localhost:8000/get/file.mp4"}
 
 
-@app.get("/get/{file}")
+@app.get("api/get/{file}")
 async def get_file(file):
     """
     Retrieves a file based on the provided file name.
