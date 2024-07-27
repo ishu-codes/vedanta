@@ -34,9 +34,37 @@ export default function GeneratePage() {
         },
     ];
 
-    const ensureFileUploaded = () => {
-        if (fileUploaded) return;
+    // const ensureFileUploaded = () => {
+    //     if (fileUploaded) return;
 
+    //     const formData = new FormData();
+    //     formData.append("file", file || "");
+    //     const config = {
+    //         headers: {
+    //             "Content-Type": "multipart/form-data",
+    //         },
+    //     };
+    //     setLoading(true);
+    //     axios
+    //         .post(`${BASE_URL}/upload_pdf/`, formData, config)
+    //         .then(() => {
+    //             setFileUploaded(true);
+    //             // setPdfUploaded(true);
+    //             // excuteRequest(path, method);
+    //         })
+    //         .catch((error) => {
+    //             console.error("Error uploading file:", error);
+    //         });
+    // };
+
+    const handleGenerate = () => {
+        // ensureFileUploaded();
+
+        // const formData = {
+        //     theme: selectedTheme,
+        // };
+
+        setLoading(true);
         const formData = new FormData();
         formData.append("file", file || "");
         const config = {
@@ -51,59 +79,53 @@ export default function GeneratePage() {
                 setFileUploaded(true);
                 // setPdfUploaded(true);
                 // excuteRequest(path, method);
+                if (outputForms.length == 2) {
+                    if (fileUploaded) return;
+
+                    axios
+                        .post(`${BASE_URL}/get_presentation/`)
+                        .then(() => {
+                            setSlidesGenerated(true);
+                            axios
+                                .post(`${BASE_URL}/generate_video/`)
+                                .then(() => {
+                                    setVideoGenerated(true);
+                                    setLoading(false);
+                                });
+                        })
+                        .catch((error) => {
+                            console.error("Error generating content:", error);
+                            setLoading(false);
+                        });
+                    return;
+                }
+
+                if (outputForms[0] == "Slides") {
+                    axios
+                        .post(`${BASE_URL}/get_presentation/`)
+                        .then(() => {
+                            setSlidesGenerated(true);
+                            setLoading(false);
+                        })
+                        .catch((error) => {
+                            console.error("Error generating content:", error);
+                            setLoading(false);
+                        });
+                    return;
+                }
+                axios
+                    .post(`${BASE_URL}/generate_video/`)
+                    .then(() => {
+                        setVideoGenerated(true);
+                        setLoading(false);
+                    })
+                    .catch((error) => {
+                        console.error("Error generating content:", error);
+                        setLoading(false);
+                    });
             })
             .catch((error) => {
                 console.error("Error uploading file:", error);
-            });
-    };
-
-    const handleGenerate = () => {
-        ensureFileUploaded();
-
-        // const formData = {
-        //     theme: selectedTheme,
-        // };
-
-        setLoading(true);
-        if (outputForms.length == 2) {
-            axios
-                .post(`${BASE_URL}/get_presentation/`)
-                .then(() => {
-                    setSlidesGenerated(true);
-                    axios.post(`${BASE_URL}/generate_video/`).then(() => {
-                        setVideoGenerated(true);
-                        setLoading(false);
-                    });
-                })
-                .catch((error) => {
-                    console.error("Error generating content:", error);
-                    setLoading(false);
-                });
-            return;
-        }
-
-        if (outputForms[0] == "Slides") {
-            axios
-                .post(`${BASE_URL}/get_presentation/`)
-                .then(() => {
-                    setSlidesGenerated(true);
-                    setLoading(false);
-                })
-                .catch((error) => {
-                    console.error("Error generating content:", error);
-                    setLoading(false);
-                });
-            return;
-        }
-        axios
-            .post(`${BASE_URL}/generate_video/`)
-            .then(() => {
-                setVideoGenerated(true);
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error("Error generating content:", error);
-                setLoading(false);
             });
     };
 
