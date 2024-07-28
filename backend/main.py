@@ -30,14 +30,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/assets", StaticFiles(directory="assets"), name="assets")
-templates = Jinja2Templates(directory="templates")
+app.mount("/vedanta/backend/assets", StaticFiles(directory="vedanta/backend/assets"), name="assets")
+templates = Jinja2Templates(directory="vedanta/backend/templates")
+
 
 @app.get("/", response_class=HTMLResponse)
-def show_frontend(request:Request):
+def show_frontend(request: Request):
     return templates.TemplateResponse(
-        request=request, name="index.html"
+                request=request, name="index.html"
     )
+
 
 @app.get("/api/")
 def api_root():
