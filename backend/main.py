@@ -126,7 +126,7 @@ async def get_video(theme:str=''):
     return {"video-url": f"http://localhost:8000/get/file.mp4"}
 
 
-@app.get("/get/{file}")
+@app.get("/api/get/{file}")
 async def get_file(file):
     """
     Retrieves a file based on the provided file name.
@@ -140,7 +140,7 @@ async def get_file(file):
     Raises:
         - None
     """
-    if file == 'file.pdf':
+    if file == 'file.pSdf':
         return FileResponse("file.pdf", media_type="application/pdf")
 
     if file == 'file.pptx':
