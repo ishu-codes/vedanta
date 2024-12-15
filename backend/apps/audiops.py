@@ -25,7 +25,7 @@ def text_to_audio(text_block, slide_number):
          API to synthesize speech.
         - The function saves the audio content to a file named '{slide_number}.mp3'.
     """
-    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "vedanta/backend/keys/credentials.json"
+    # os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = "backend/keys/credentials.json"
 
     tts_client = texttospeech.TextToSpeechClient()
 
@@ -53,7 +53,7 @@ def text_to_audio(text_block, slide_number):
         audio_config=audio_config
     )
 
-    with open(f"vedanta/backend/generated_audio/{slide_number}.mp3", "wb") as out:
+    with open(f"backend/generated_audio/{slide_number}.mp3", "wb") as out:
         out.write(response.audio_content)
         print(f"Audio written to file {slide_number}.mp3")
 

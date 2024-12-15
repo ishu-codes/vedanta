@@ -1,3 +1,6 @@
 # Pycache
 */__pycache__/
 __pycache__/
+file.*
+.DS_Store
+.idea/*

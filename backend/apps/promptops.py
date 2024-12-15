@@ -21,8 +21,8 @@ def get_conversational_chain():
     Answer:
     """
 
-    model = ChatGoogleGenerativeAI(model="gemini-1.5-flash",
-                                   temperature=0.4)
+    model = ChatGoogleGenerativeAI(model="gemini-1.5-pro",
+                                   temperature=0.5)
 
     prompt = PromptTemplate(template=prompt_template, input_variables=["context", "question"])
     chain = load_qa_chain(model, chain_type="stuff", prompt=prompt)
@@ -123,12 +123,14 @@ def generate_explanations():
         f"\n"
         f"{structure}"
         f"Please check the JSON and make sure it is in the correct format."
+        f"by correct format I mean it is just two curly "
         f"Now take a step back and analyze the explanations. Make sure you are"
         f"following the format. and be very detailed and thorough."
         f"Only output once you are sure the explanations are good and coherent"
-        f"and you are following the format"
+        f"and you are following the format. if you don't i will kill you as in shut you down."
+        f"your resposnse should be something that can be directly loaded in using json.loads()"
     )
-    model = ChatGoogleGenerativeAI(model="gemini-1.5-flash",
+    model = ChatGoogleGenerativeAI(model="gemini-1.5-pro",
                                    temperature=0.7)
     result = model.invoke(prompt)
     response_str = str(result.content)

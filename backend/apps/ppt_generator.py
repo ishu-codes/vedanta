@@ -1,5 +1,7 @@
 import json
 import logging
+import re
+from logging import exception
 
 from fastapi import HTTPException
 from pptx import Presentation
@@ -54,6 +56,33 @@ async def generate_presentation(selected_theme="Theme1"):
         f"use bullet points and other things to make the text more engaging for the student."
         f"If there is more to the topic add a new slide. Do not be afraid to"
         f" divide things into 2-3 points for a slide."
+        f"make sure you only output the json not some dumbass reasons why this json is good or correct"
+        f"json should be in a way that passes this python code"
+        f"""def validate_json_data_structure(json_data):
+    if not isinstance(json_data, (dict, list)):
+        raise ValueError("Invalid JSON data format")
+
+    if isinstance(json_data, dict):
+        slides = json_data.get("slides")
+        if slides is None:
+            raise ValueError("Missing 'slides' field in slide data")
+    else:
+        slides = json_data
+
+    for slide_data in slides:
+        if not isinstance(slide_data, dict):
+            raise ValueError("Invalid JSON data format")
+        if "title" not in slide_data:
+            raise ValueError("Missing 'title' field in slide data")
+        if not isinstance(slide_data["title"], str):
+            raise ValueError("'title' field must be a string")
+        if "content" not in slide_data:
+            raise ValueError("Missing 'content' field in slide data")
+        if not isinstance(slide_data["content"], str):
+            raise ValueError("'content' field must be a string")
+"""
+        f"make sure you only output the json not some dumbass reasons why this json is good or correct please"
+        f"don't use html elements only markdown bitch."
     )
 
     try:
@@ -64,7 +93,7 @@ async def generate_presentation(selected_theme="Theme1"):
 
         json_string = response_str.strip("<> \n```json")
         print(json_string)  # Extract the JSON string from the response
-        # print("ln32")
+        print("ln69")
         json_pptx = json.loads(json_string)
         print("formatting kuch aaise hui")
         print(json_pptx)
@@ -200,7 +229,7 @@ def process_presentation(json_data, selected_theme="Theme1"):
     try:
         validate_json_data_structure(json_data)
         print("json valid tha")
-        presentation = Presentation("vedanta/backend/theme_pptx/" + selected_theme + ".pptx")
+        presentation = Presentation("backend/theme_pptx/" + selected_theme + ".pptx")
         slides = json_data.get("slides", []) if isinstance(json_data, dict) else json_data
 
         for slide_data in slides:
