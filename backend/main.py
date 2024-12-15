@@ -44,31 +44,28 @@ def read_root():
     }
 
 
-@app.on_event("startup")
-async def startup_event():
-    """
-    Standard Cleanup Operation
-    :return: None
-    """
-    try:
-        os.system('rm file.pptx')
-        os.system('rm file.pdf')
-        os.system('rm file.mp4')
-        os.system('del file.pptx')
-        os.system('del file.pdf')
-        os.system('del file.mp4')
-        temp_path = 'vedanta/backend/temp_images'
-        audio_dir = 'vedanta/backend/generated_audio'
-        shutil.rmtree(temp_path)
-        shutil.rmtree(audio_dir)
-        if not os.path.exists(temp_path):
-            os.makedirs(temp_path)
-        if not os.path.exists(audio_dir):
-            os.makedirs(audio_dir)
-
-    except Exception as e:
-        print(e)
-        pass
+# @app.on_event("startup")
+# async def startup_event():
+#     """
+#     Standard Cleanup Operation
+#     :return: None
+#     """
+#     try:
+#         os.system('rm file.pptx')
+#         os.system('rm file.pdf')
+#         os.system('rm file.mp4')
+#         temp_path = 'temp_images'
+#         audio_dir = 'generated_audio'
+#         shutil.rmtree(temp_path)
+#         shutil.rmtree(audio_dir)
+#         if not os.path.exists(temp_path):
+#             os.makedirs(temp_path)
+#         if not os.path.exists(audio_dir):
+#             os.makedirs(audio_dir)
+#
+#     except Exception as e:
+#         print(e)
+#         pass
 
 
 @app.post("/api/upload_pdf/")
@@ -106,28 +103,28 @@ async def get_presentation():
             "pdf-url": f"http://localhost:8000/get/file.pdf"}
 
 
-@app.options("api/get_presentation/")
+@app.options("/api/get_presentation/")
 async def handle_options(request: Request):
     return {"Allow": "GET, POST, OPTIONS"}
 
 
-@app.post("api/generate_video/")
+@app.post("/api/generate_video/")
 async def get_video():
     generate_audio_files(json.loads(generate_explanations()))
     pdf_path = "file.pdf"
-    audio_dir = "vedanta/backend/generated_audio"
+    audio_dir = "backend/generated_audio"
     output_path = "file.mp4"
     pdf_to_video(pdf_path, audio_dir, output_path, fps=1)
 
     return {"video-url": f"http://localhost:8000/get/file.mp4"}
 
 
-@app.options("api/generate_video/")
+@app.options("/api/generate_video/")
 async def handle_options(request: Request):
     return {"Allow": "GET, POST, OPTIONS"}
 
 
-@app.get("api/get/{file}")
+@app.get("/api/get/{file}")
 async def get_file(file):
     """
     Retrieves a file based on the provided file name.
@@ -142,15 +139,14 @@ async def get_file(file):
         - None
     """
     if file == 'file.pdf':
-        return FileResponse("file.pdf", media_type="application/pdf")
+        return FileResponse("file.pdf")
 
     if file == 'file.pptx':
-        return FileResponse("file.pptx", media_type="application/vnd.openxmlformats-"
-                                                    "officedocument.presentationml.file")
+        return FileResponse("file.pptx", media_type="application/vnd.openxmlformats-officedocument.presentationml.presentation")
     if file == 'file.mp4':
         return FileResponse("file.mp4", media_type="video/mp4")
 
 
-@app.options("api/get/{file}")
+@app.options("/api/get/{file}")
 async def handle_options(request: Request):
     return {"Allow": "GET, OPTIONS"}

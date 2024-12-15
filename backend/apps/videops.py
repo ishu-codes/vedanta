@@ -9,7 +9,7 @@ def pdf_to_video(pdf_path, audio_dir, output_path, fps=1):
         Args:
             pdf_path (str): Path to the PDF file.
             audio_dir (str): Path to the directory containing audio files
-                             (one MP3 file per page, named "page1.mp3", "page2.mp3", etc.).
+                             (one MP3 file per page, named "1.mp3", "2.mp3", etc.).
             output_path (str, optional): Path to the output MP4 video file.
                                          Defaults to "output.mp4".
             fps (int, optional): Frames per second for the video.
@@ -20,7 +20,7 @@ def pdf_to_video(pdf_path, audio_dir, output_path, fps=1):
     # Load a document
     pdf = pdfium.PdfDocument(pdf_path)
 
-    temp_path = "vedanta/backend/temp_images"
+    temp_path = "backend/temp_images"
     if not os.path.exists(temp_path):
         os.makedirs(temp_path)
     # Loop over pages and render
